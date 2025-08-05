@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>DVD en Mouvement</title>
+  <title>DVD en Mouvement avec Son</title>
   <style>
     body {
       background-color: black;
@@ -22,9 +22,11 @@
 </head>
 <body>
   <div id="DVD">DVD</div>
+  <audio id="bounceSound" src="chemin/vers/ton/son.mp3"></audio> <!-- Remplace par le chemin de ton fichier audio -->
 
   <script>
     const DVD = document.getElementById("DVD");
+    const bounceSound = document.getElementById("bounceSound");
 
     let posX = 100;
     let posY = 100;
@@ -50,12 +52,14 @@
       if (posX <= 0 || posX >= maxX) {
         velX *= -1; // Inverse la direction horizontale
         DVD.style.color = couleurAleatoire(); // Change la couleur
+        bounceSound.play(); // Joue le son
       }
 
       // Collision avec les bords verticaux
       if (posY <= 0 || posY >= maxY) {
         velY *= -1; // Inverse la direction verticale
         DVD.style.color = couleurAleatoire(); // Change la couleur
+        bounceSound.play(); // Joue le son
       }
 
       DVD.style.left = posX + "px";
@@ -68,3 +72,6 @@
   </script>
 </body>
 </html>
+
+
+Si tu as d'autres questions ou si tu souhaites des précisions, n'hésite pas à demander ! 😊
