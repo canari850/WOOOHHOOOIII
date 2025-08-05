@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVD Vitesse + / -</title>
+  <style>
+    body {
+      background-color: black;
+      margin: 0;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    #DVD {
+      position: absolute;
+      color: blue;
+      font-size: 3rem;
+      font-family: sans-serif;
+      user-select: none;
+    }
+
+    #sliderContainer {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: sans-serif;
+    }
+
+    button {
+      padding: 5px 10px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="DVD">DVD</div>
+
+  <!-- Contrôles -->
+  <div id="sliderContainer">
+    <button id="minus">−</button>
+    Vitesse : <input type="range" id="speedSlider" min="1" max="10" value="5" />
+    <button id="plus">+</button>
+  </div>
+
+  <script>
+    const DVD = document.getElementById("DVD");
+    const speedSlider = document.getElementById("speedSlider");
+    const plusBtn = document.getElementById("plus");
+    const minusBtn = document.getElementById("minus");
+
+    let posX = 100;
+    let posY = 100;
+    let velX = 5;
+    let velY = 5;
+
+    function couleurAleatoire() {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    function move() {
+      const rect = DVD.getBoundingClientRect();
+      const maxX = window.innerWidth - rect.width;
+      const maxY = window.innerHeight - rect.height;
+
+      posX += velX;
+      posY += velY;
+
+      if (posX <= 0 || posX >= maxX) {
+        velX *= -1;
+        DVD.style.color = couleurAleatoire();
+      }
+
+      if (posY <= 0 || posY >= maxY) {
+        velY *= -1;
+        DVD.style.color = couleurAleatoire();
+      }
+
+      DVD.style.left = posX + "px";
+      DVD.style.top = posY + "px";
+
+      requestAnimationFrame(move);
+    }
+
+    // Mettre à jour la vitesse depuis le slider
+    speedSlider.addEventListener("input", () => {
+      const speed = parseInt(speedSlider.value, 10);
+      velX = Math.sign(velX) * speed;
+      velY = Math.sign(velY) * speed;
+    });
+
+    // Bouton +
+    plusBtn.addEventListener("click", () => {
+      let val = parseInt(speedSlider.value, 10);
+      if (val < 10) val++;
+      speedSlider.value = val;
+      speedSlider.dispatchEvent(new Event("input"));
+    });
+
+    // Bouton −
+    minusBtn.addEventListener("click", () => {
+      let val = parseInt(speedSlider.value, 10);
+      if (val > 1) val--;
+      speedSlider.value = val;
+      speedSlider.dispatchEvent(new Event("input"));
+    });
+
+    move();
+  </script>
+</body>
+</html>
